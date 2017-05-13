@@ -32,47 +32,56 @@ public:
   ///* predicted sigma points matrix
   MatrixXd Xsig_pred_;
 
-  ///* time when the state is true, in us
-  long long time_us_;
+    ///* time when the state is true, in us
+    long long time_us_;
 
-  ///* Process noise standard deviation longitudinal acceleration in m/s^2
-  double std_a_;
+    ///* Process noise standard deviation longitudinal acceleration in m/s^2
+    double std_a_;
 
-  ///* Process noise standard deviation yaw acceleration in rad/s^2
-  double std_yawdd_;
+    ///* Process noise standard deviation yaw acceleration in rad/s^2
+    double std_yawdd_;
 
-  ///* Laser measurement noise standard deviation position1 in m
-  double std_laspx_;
+    ///* Laser measurement noise standard deviation position1 in m
+    double std_laspx_;
 
-  ///* Laser measurement noise standard deviation position2 in m
-  double std_laspy_;
+    ///* Laser measurement noise standard deviation position2 in m
+    double std_laspy_;
 
-  ///* Radar measurement noise standard deviation radius in m
-  double std_radr_;
+    ///* Radar measurement noise standard deviation radius in m
+    double std_radr_;
 
-  ///* Radar measurement noise standard deviation angle in rad
-  double std_radphi_;
+    ///* Radar measurement noise standard deviation angle in rad
+    double std_radphi_;
 
-  ///* Radar measurement noise standard deviation radius change in m/s
-  double std_radrd_ ;
+    ///* Radar measurement noise standard deviation radius change in m/s
+    double std_radrd_ ;
 
-  ///* Weights of sigma points
-  VectorXd weights_;
+    ///* Weights of sigma points
+    VectorXd weights_;
 
-  ///* State dimension
-  int n_x_;
+    ///* State dimension
+    int n_x_;
 
-  ///* Augmented state dimension
-  int n_aug_;
+    ///* Augmented state dimension
+    int n_aug_;
 
-  ///* Sigma point spreading parameter
-  double lambda_;
+    ///* Sigma point spreading parameter
+    double lambda_;
 
-  ///* the current NIS for radar
-  double NIS_radar_;
+    ///* the current NIS for radar
+    double NIS_radar_;
 
-  ///* the current NIS for laser
-  double NIS_laser_;
+    ///* the current NIS for laser
+    double NIS_laser_;
+
+    ///* Radar measurement noise covariance matrix
+    MatrixXd R_radar_;
+
+    ///* Lidar measurement noise covariance matrix
+    MatrixXd R_lidar_;
+
+    ///* Number of sigma points
+    int n_sig_;
 
   /**
    * Constructor
@@ -101,6 +110,8 @@ public:
    * Updates the state and the state covariance matrix using a laser measurement
    * @param meas_package The measurement at k+1
    */
+
+
   void UpdateLidar(MeasurementPackage meas_package);
 
   /**
@@ -108,6 +119,19 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+    /**
+     *  Normaizing the angle within -pi to pi
+     * @param ang = pointer to the angle
+     */
+    void NormAng(double *ang);
+
+
+    /**
+   * Updates the state and the state covariance matrix of the UKF
+   *
+   */
+    void UpdateUKF(MeasurementPackage meas_package, MatrixXd Zsig, int n_z);
 };
 
 #endif /* UKF_H */

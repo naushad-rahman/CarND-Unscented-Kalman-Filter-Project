@@ -157,9 +157,12 @@ int main(int argc, char* argv[]) {
   out_file_ << "vx_ground_truth" << "\t";
   out_file_ << "vy_ground_truth" << "\n";
 
-
+  // std::cout<<"\r\n \t No of measurement="<<number_of_measurements<<"\r\n";
   for (size_t k = 0; k < number_of_measurements; ++k) {
     // Call the UKF-based fusion
+
+     // std::cout<<"\r\n \t K="<<k<< "\r\n";
+      //std::cout<<"\r\n \t Type "<<measurement_pack_list[k].sensor_type_<<"\r\n";
     ukf.ProcessMeasurement(measurement_pack_list[k]);
 
     // timestamp
@@ -221,7 +224,8 @@ int main(int argc, char* argv[]) {
 
   // compute the accuracy (RMSE)
   Tools tools;
- // cout << "RMSE" << endl << tools.CalculateRMSE(estimations, ground_truth) << endl;
+    cout<<"X_"<<ukf.x_<<endl;
+ cout << "RMSE" << endl << tools.CalculateRMSE(estimations, ground_truth) << endl;
 
   // close files
   if (out_file_.is_open()) {
